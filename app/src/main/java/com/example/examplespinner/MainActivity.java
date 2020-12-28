@@ -13,33 +13,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private Spinner spinner;
-    private  List<String> list;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add("Siêu nhân gao");
         list.add("Siêu nhân cuồng phong");
         list.add("Siêu nhân khủng long");
         list.add("Siêu nhân điện quang");
         list.add("Siêu nhân dế");
         list.add("Siêu nhân phép thuật");
-        spinner = (Spinner) findViewById(R.id.id_spinner);
-        ArrayAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, list);
 
-        spinner.setAdapter(spinnerAdapter);
+        Spinner spinner = findViewById(R.id.id_spinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//Gọi lệnh này để hiển thị danh sách cho Spinner
+        spinner.setAdapter(spinnerAdapter);//set Adapter trên vào thằng spinner, đưa dữ liệu vào Adapter rồi thì bây giờ chỉ việc đưa nó lên thằng Spinner
 
-
+        //Khi có Item nào được chọn thì Spinner sẽ giải phóng sự kiện, chúng ta implement giao diện OnItemSelectedListerner để bắt lấy sự kiện đó
+        // có 2 phương thức phải override lại là onItemSelected() và onNothingSelected().
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
+            //hàm này khi có một sự kiện chọn item nào đó, sau đó chuyển thành string r gán cho cái Toast
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String msg = "position :" + position + " value :" + list.get(position);
                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
+
+            //hàm này khi click vào Spinner mà không chọn item nào cả
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 Toast.makeText(MainActivity.this, "onNothingSelected", Toast.LENGTH_SHORT).show();
